@@ -1,12 +1,10 @@
-﻿global using System;
-global using Fahrenheit.CoreLib.FFX;
-
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
-using Fahrenheit.CoreLib;
-using Fahrenheit.CoreLib.FFX.Atel;
+
+using Fahrenheit.Core;
+using Fahrenheit.Core.FFX;
+using Fahrenheit.Core.FFX.Atel;
 
 namespace Fahrenheit.Modules.CSR;
 
@@ -14,9 +12,8 @@ public sealed record CSRModuleConfig : FhModuleConfig {
     [JsonConstructor]
     public CSRModuleConfig(string configName, bool configEnabled) : base(configName, configEnabled) { }
 
-    public override bool TrySpawnModule([NotNullWhen(true)] out FhModule? fm) {
-        fm = new CSRModule(this);
-        return fm.ModuleState == FhModuleState.InitSuccess;
+    public override CSRModule SpawnModule() {
+        return new CSRModule(this);
     }
 }
 
@@ -84,12 +81,10 @@ public unsafe class CSRModule : FhModule {
         _moduleConfig = moduleConfig;
 
         _work_debug = new(this, "FFX.exe", work_debug, offset: 0x46e990);
-        _csr_event = new(this, "FFX.exe", csr_event, offset: 0x472e90);
-
-        _moduleState  = FhModuleState.InitSuccess;
+        _csr_event  = new(this, "FFX.exe", csr_event, offset: 0x472e90);
     }
 
-    public override bool FhModuleInit() {
+    public override bool init() {
         Removers.init();
 
         return _csr_event.hook()

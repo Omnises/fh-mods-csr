@@ -1,5 +1,6 @@
-﻿using Fahrenheit.CoreLib.FFX.Atel;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+
+using Fahrenheit.Core.FFX.Atel;
 
 using static Fahrenheit.Modules.CSR.CSRModule;
 
