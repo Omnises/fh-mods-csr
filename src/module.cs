@@ -10,7 +10,7 @@ namespace Fahrenheit.Modules.CSR;
 
 public sealed record CSRModuleConfig : FhModuleConfig {
     [JsonConstructor]
-    public CSRModuleConfig(string configName, bool configEnabled) : base(configName, configEnabled) { }
+    public CSRModuleConfig(string configName) : base(configName) { }
 
     public override CSRModule SpawnModule() {
         return new CSRModule(this);
